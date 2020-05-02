@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block content %}
+
+{% for task in all_tasks % }
+<TR>
+    <TD class="c2">{{ task.id }}</TD>
+    <TD class="c3">{{ task.timestamp }}</TD>
+    <TD class="c4">{{ task.task_status }}</TD>
+</TR>
+{% endfor %}
+
+{% endblock %}

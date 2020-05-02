@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="formwrapper">
+    <h2>Поиск на сайте строки python</h2>
+    <form method="POST" action="/addsite">
+        {{ form.csrf_token }}
+        <div class="form-field">{{ form.address.label }} {{ form.address }}</div>
+        <input type="submit" value="Поиск">
+        {{ form.submit }}
+    </form>
+</div>
+{% endblock %}
