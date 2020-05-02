@@ -4,6 +4,7 @@ from app import app, db, celery
 from .models import *
 from .forms import MainForm
 from datetime import datetime
+from requests.exceptions import Timeout
 
 
 @app.route('/')
@@ -38,13 +39,20 @@ def parser(id):
     task.task_status = 'PENDING'
     db.session.commit()
     address = task.address
-    res_address = requests.get(address)
+
+    status_code = 404
+    try:
+        res_address = requests.get(address, timeout=10)
+        status_code = res_address.status_code
+    except Timeout:
+        status_code = 504
+
     count = 0
-    if res_address.status_code == 200:
+    if status_code == 200:
         words = res_address.text.split()
         count = words.count("Python")
 
-    result = Results(address=address, words_count=count, http_status_code=res.status_code)
+    result = Results(address=address, words_count=count, http_status_code=status_code)
     task = Tasks.query.get(id)
     task.task_status = 'FINISHED'
     db.session.add(result)
