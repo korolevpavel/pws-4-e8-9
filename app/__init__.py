@@ -12,3 +12,5 @@ celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
 celery.conf.update(app.config)
 
 db.create_all()
+
+from app import controllers, models
